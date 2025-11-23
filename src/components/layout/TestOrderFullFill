@@ -1,0 +1,340 @@
+import React, { useState } from 'react';
+import { 
+  Filter, 
+  Download, 
+  Upload,
+  MessageSquare
+} from 'lucide-react';
+
+const OrderFulfillmentTable = () => {
+  const [activeTab, setActiveTab] = useState('sales');
+  
+  // Sample data for the table
+  const orders = [
+    {
+      id: 1,
+      orderNumber: '3174-5010475-14430266-136064264',
+      orderType: 'Sales Order',
+      workgroup: 'Coba Pro',
+      staffName: 'Salesman Coba 1',
+      staffId: 'FTDPFW6DIDCK',
+      customer: 'Toko Kiral Indah',
+      customerId: 'FMETERABEEC',
+      location: 'KOTA JAKARTA TIMUR',
+      approvalDue: '-',
+      status: 'Pending',
+      createdTime: '29 Jul 2024, 13:49',
+      hasChat: true
+    },
+    {
+      id: 2,
+      orderNumber: '3174-5010475-14472321-105801526',
+      orderType: 'Sales Order',
+      workgroup: 'Coba Pro',
+      staffName: 'Salesman Coba 1',
+      staffId: 'FTDPFW6DIDCK',
+      customer: 'ACEH 00001',
+      customerId: 'ACEHI00001',
+      location: 'KABUPATEN ACEH SELATAN',
+      approvalDue: '-',
+      status: 'Pending',
+      createdTime: '26 Jul 2024, 16:58',
+      hasChat: false
+    },
+    {
+      id: 3,
+      orderNumber: '3174-5010475-14471775-16447754',
+      orderType: 'Sales Order',
+      workgroup: 'Coba Pro',
+      staffName: 'Salesman Coba 1',
+      staffId: 'FTDPFW6DIDCK',
+      customer: 'Andi Motor',
+      customerId: '20050412440E000097',
+      location: 'KOTA JAKARTA BARAT',
+      approvalDue: '-',
+      status: 'Pending',
+      createdTime: '26 Jul 2024, 16:44',
+      hasChat: true
+    },
+    {
+      id: 4,
+      orderNumber: '3174-5010475-14471775-16413904',
+      orderType: 'Sales Order',
+      workgroup: 'Coba Pro',
+      staffName: 'Salesman Coba 1',
+      staffId: 'FTDPFW6DIDCK',
+      customer: 'Andi Motor',
+      customerId: '20050412440E000097',
+      location: 'KOTA JAKARTA BARAT',
+      approvalDue: '-',
+      status: 'Pending',
+      createdTime: '26 Jul 2024, 16:41',
+      hasChat: true
+    },
+    {
+      id: 5,
+      orderNumber: '3174-5010475-1660802-170716354',
+      orderType: 'Consignment',
+      workgroup: 'Coba Pro',
+      staffName: 'Salesman Coba 1',
+      staffId: 'FTDPFW6DIDCK',
+      customer: 'Gita store',
+      customerId: '20050412407F000097',
+      location: 'KOTA SURABAYA',
+      approvalDue: '-',
+      status: 'Pending',
+      createdTime: '22 Jul 2024, 12:07',
+      hasChat: false
+    },
+    {
+      id: 6,
+      orderNumber: '3176-5010472-14382919-085848808',
+      orderType: 'Sales Order',
+      workgroup: 'Distributor Kak Agnes',
+      staffName: 'Agnes H',
+      staffId: 'masterdistrion@gmail.com',
+      customer: 'orita rumah makan',
+      customerId: '20050442407F000081',
+      location: 'KOTA MAKASSAR',
+      approvalDue: '-',
+      status: 'Pending',
+      createdTime: '19 Jul 2024, 08:58',
+      hasChat: true
+    }
+  ];
+
+  // Summary data
+  const summaryData = {
+    totalSalesOrder: 43,
+    pendingToFulfilled: 15,
+    waitingForPayment: 20,
+    waitingForDelivery: 20,
+    totalOrderValue: 'IDR 29,924,500'
+  };
+
+  return (
+    <div className="bg-gray-50 min-h-screen p-6">
+      <h1 className="text-xl font-medium text-gray-700 mb-6">Order to Fulfill</h1>
+      
+      {/* Tabs */}
+      <div className="border-b border-gray-200">
+        <nav className="-mb-px flex">
+          <button
+            onClick={() => setActiveTab('sales')}
+            className={`${
+              activeTab === 'sales'
+                ? 'border-b-2 border-green-500 font-medium text-green-600'
+                : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            } py-4 px-6 text-sm focus:outline-none`}
+          >
+            Sales Order
+          </button>
+          <button
+            onClick={() => setActiveTab('purchase')}
+            className={`${
+              activeTab === 'purchase'
+                ? 'border-b-2 border-green-500 font-medium text-green-600'
+                : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            } py-4 px-6 text-sm focus:outline-none`}
+          >
+            Purchase Order from Customer
+          </button>
+        </nav>
+      </div>
+      
+      {/* Action Bar */}
+      <div className="bg-white rounded-t-md mt-4 p-4 border-b border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <div className="flex mb-4 sm:mb-0 space-x-2">
+            <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm flex items-center">
+              <span className="mr-1">+</span>
+              CREATE NEW SALES ORDER
+            </button>
+            <button className="border border-green-500 text-green-500 px-4 py-2 rounded-md text-sm">
+              EXPORT
+            </button>
+          </div>
+          <div className="flex w-full sm:w-auto">
+            <div className="relative w-full sm:w-64 mr-2">
+              <input
+                type="text"
+                placeholder="Search with min. 3 characters"
+                className="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+              />
+            </div>
+            <div className="relative flex-shrink-0">
+              <input
+                type="text"
+                placeholder="Sales Order Number"
+                className="w-full sm:w-48 pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+              />
+            </div>
+            <button className="border border-gray-300 ml-2 px-3 py-2 rounded-md text-gray-500 flex items-center">
+              <Filter size={16} />
+              <span className="ml-1">Filter</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Results Count & Date Range */}
+      <div className="bg-white py-3 px-4 flex flex-col sm:flex-row justify-between text-xs text-gray-500">
+        <span>44 result found</span>
+        <div className="flex justify-between mt-2 sm:mt-0">
+          <span>Created Period 29 Jun 2024 - 29 Jul 2024</span>
+          <button className="text-gray-500 ml-4 hover:text-gray-700">Reset Filters</button>
+        </div>
+      </div>
+      
+      {/* Summary Cards */}
+      <div className="bg-white py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 border-t border-gray-200">
+        <div className="text-center">
+          <div className="text-xs text-gray-500 mb-1">Total Sales Order</div>
+          <div className="text-xl font-semibold">{summaryData.totalSalesOrder}</div>
+        </div>
+        <div className="text-center">
+          <div className="text-xs text-gray-500 mb-1">Pending to Fulfilled</div>
+          <div className="text-xl font-semibold">{summaryData.pendingToFulfilled}</div>
+        </div>
+        <div className="text-center">
+          <div className="text-xs text-gray-500 mb-1">Waiting for Payment</div>
+          <div className="text-xl font-semibold">{summaryData.waitingForPayment}</div>
+        </div>
+        <div className="text-center">
+          <div className="text-xs text-gray-500 mb-1">Waiting for Delivery</div>
+          <div className="text-xl font-semibold">{summaryData.waitingForDelivery}</div>
+        </div>
+        <div className="text-center">
+          <div className="text-xs text-gray-500 mb-1">Total Sales Order Value</div>
+          <div className="text-xl font-semibold">{summaryData.totalOrderValue}</div>
+        </div>
+      </div>
+      
+      {/* Table */}
+      <div className="bg-white rounded-b-md overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                No
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <div className="flex items-center">
+                  Sales Order Number
+                  <span className="ml-1 text-gray-400">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Order Type
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Workgroup
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Staff Name
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Customer
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Location
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Approval Due
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Created Time
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <div className="flex space-x-2">
+                  <button className="hover:text-green-500">
+                    <Download size={16} />
+                  </button>
+                  <button className="hover:text-green-500">
+                    <Upload size={16} />
+                  </button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {orders.map((order) => (
+              <tr key={order.id} className="hover:bg-gray-50">
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  {order.id}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-2 ${
+                      order.hasChat ? 'bg-green-500' : 'bg-gray-400'
+                    }`}>
+                      {order.hasChat && (
+                        <span className="text-white text-xs">✓</span>
+                      )}
+                      {!order.hasChat && (
+                        <span className="text-white text-xs">?</span>
+                      )}
+                    </div>
+                    <div className="text-sm text-blue-600 hover:underline">
+                      {order.orderNumber}
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  {order.orderType}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  {order.workgroup}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{order.staffName}</div>
+                  <div className="text-xs text-gray-500">{order.staffId}</div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{order.customer}</div>
+                  <div className="text-xs text-gray-500">{order.customerId}</div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  {order.location}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  {order.approvalDue}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                    {order.status}
+                  </span>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  {order.createdTime}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-center">
+                  {order.id === 6 && (
+                    <div className="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center">
+                      <MessageSquare size={14} />
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        
+        {/* Pagination or footer can be added here if needed */}
+        <div className="px-4 py-3 flex justify-between">
+          <div></div>
+          <div className="text-xs text-gray-500">10 Entries</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrderFulfillmentTable;
